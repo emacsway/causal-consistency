@@ -1,7 +1,10 @@
 # supporting data types
 - shared register
+  
   + CM@DC95, OCC@PODC15
+
 - arbitrary data types
+  
   + others
 
 # relative strength  
@@ -27,22 +30,30 @@
 - [SOSP11-Do not Settle for Eventual Scalable Causal Consistency for Wide-Area Storage with COPS](https://github.com/hengxin/causal-consistency/blob/master/models/SOSP11-Causal%2B-Do%20not%20Settle%20for%20Eventual%20Scalable%20Causal%20Consistency%20for%20Wide-Area%20Storage%20with%20COPS%20.pdf)
 
 ### definition
+
 - key-value store
+  
   * put(key,val)
   
   * get(key)  
   
 - causal order
+  
   * put-to order 
   
 - convergent conflict handling
+
   * handler thread
+      
       + *convergent conflict handling function*: operates on a set of conflicting operations on a key to eventually produce one (possibly new) final value for that key.
      
-     + add new generated causal orders between the following two elements: 1. origining conflicting *puts* or intermediate values; 2. the final value
+      + add new generated causal orders between the following two elements: 1. original *puts* or intermediate values; 2. the final value
       
   * client thread
+      
       + conflict-free *put* set 
 
-- Informally, for each client thread *t* of an execution, there is a serialization of **all local operations** on *t* and all conflict-free ***puts***, that respects the causal order.
+- informal definition
+  
+  * for each **client** thread *t* of an execution, there is a serialization of **all local operations** on *t* and all conflict-free ***puts***, that respects the causal order.
        
