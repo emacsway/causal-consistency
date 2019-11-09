@@ -30,6 +30,20 @@ fixes for v1 are available in MongoDB 3.2.12 and 3.4.0, and now pass the expande
 and show that sessions prevent anomalies so long as user stick to majority reads and writes. 
 However, with MongoDB’s default consistency levels, CC sessions fail to provide the claimed invariants.
 
+> Finally, *there are significant limitations to our tests.* 
+Our sharded tests assume a relatively uniform cluster topology, 
+where all MongoDB components partition in the same way. 
+Non-homogeneous topologies where we can partition configsvr 
+and mongos processes separately from shardsvr processes may find unique anomalies. 
+Starting and stopping and killing various component processes may also provide interesting results.
+
+> Our causal consistency test only measures a very simple case: 
+we test short time frames, on single keys, against single nodes, from single client threads. 
+We suspect that writes to multiple nodes might be required to observe causal violations 
+with majority writes and sub-majority reads.
+We also don’t check how failures and process crashes influence causal orders.
+*Ultimately, there’s still a lot we don’t know!*
+
 ## Discussions about Jepsen-Test on MongoDB
 - [MongoDB 3.4.0-rc3 (jepsen.io); aphyr on Feb 7, 2017](https://news.ycombinator.com/item?id=13590385)
 
