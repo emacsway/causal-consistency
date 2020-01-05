@@ -18,7 +18,7 @@
  
 - WCCv@PPoPP16 = CCv@VCC17 = CC@POEC15
 
-- COCV@UEC13 = Causal+@SOSP11 = **? CCv@(vis,ar_l,ar_g) framework**
+- COCV@UEC13 = Causal+@SOSP11 = **WCCv@(vis,ar_l,ar_g) framework**
 
 - RTC@TR11 is the strongest achievable causality based consistency in high-available, convergent systems
 
