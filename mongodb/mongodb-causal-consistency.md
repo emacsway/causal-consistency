@@ -31,12 +31,25 @@ Client applications must ensure that only one thread at a time executes these op
 ### Client
 - [Session](https://docs.mongodb.com/manual/reference/method/Session/index.html)
   - [`Session.advanceClusterTime(clusterTime, signature)`](https://docs.mongodb.com/manual/reference/method/Session/index.html#Session.advanceClusterTime)
+    > Updates the cluster time tracked by the session.
   - [`Session.advanceOperationTime(timestamp)`](https://docs.mongodb.com/manual/reference/method/Session/index.html#Session.advanceOperationTime)
+    > Updates the operation time.
   - [`Session.getClusterTime()`](https://docs.mongodb.com/manual/reference/method/Session/index.html#Session.getClusterTime)
+    > Returns the *most recent cluster time* as seen by the session. Applicable for replica sets and sharded clusters only.
   - [`Session.getOperationTime()`](https://docs.mongodb.com/manual/reference/method/Session/index.html#Session.getOperationTime)
+    > Returns the timestamp of *the last acknowledged operation* for the session.
 
 > A client [can advance the cluster time and the operation time](https://docs.mongodb.com/manual/core/read-isolation-consistency-recency/#client-sessions-and-causal-consistency-guarantees) of one client session 
 to be consistent with the operations of another client session.
+
+- [SessionOptions](https://docs.mongodb.com/manual/reference/method/SessionOptions/)
+  > The options for a session in the mongo shell. 
+    To access the `SessionOptions` object, use the `Session.getOptions()` method.
+  - `causalConsistency`
+  - `readConcern`
+  - `readPreference`
+  - `retryWrites`
+  - `writeConcern`
 
 - [Causally Consistent Sessions](https://docs.mongodb.com/manual/core/read-isolation-consistency-recency/#client-sessions-and-causal-consistency-guarantees)
 
@@ -53,6 +66,9 @@ MongoDB returns *the operation time and the cluster time*, even if the operation
 The client session keeps track of the operation time and the cluster time.
 4. The associated client session tracks these two time fields.
 
+> "Majority" concerns for reads and writes are required only for *causal consistency with data durability*.
+See below.
+
 - [Read Operations and afterClusterTime](https://docs.mongodb.com/manual/reference/read-concern/#afterclustertime)
 
 > MongoDB 3.6 introduces support for *causally consistent sessions*. 
@@ -61,8 +77,24 @@ MongoDB 3.6 introduces the `afterClusterTime` read concern option
 to be set *automatically* by the drivers for operations associated with causally consistent sessions.
 
 > To satisfy a read request *with* an `afterClusterTime` value of T, 
-a mongod must perform the request after its oplog reaches time T. 
+a mongod must perform the request *after its oplog reaches time T*. 
 If its oplog has not reached time T, the mongod must `wait` to service the request.
+
+> Important:
+Do *not* manually set `afterClusterTime` for a read operation. 
+MongoDB drivers set this value *automatically* for operations associated with causally consistent sessions. 
+However, you can advance the operation time and the cluster time for the session, 
+such as to be consistent with the operations of another client session.
+See [causal-consistency-examples @ client-session](https://docs.mongodb.com/manual/core/read-isolation-consistency-recency/#causal-consistency-examples).
+
+> For read operations not associated with causally consistent sessions, `afterClusterTime` is unset.
+
+- [Isolation](https://docs.mongodb.com/manual/core/read-isolation-consistency-recency/#isolation)
+
+> Operations within a causally consistent session are *not isolated* from operations outside the session. 
+If a concurrent write operation interleaves between the session’s write and read operations, 
+the session’s read operation *may* return results that reflect a write operation 
+that occurred *after* the session’s write operation.
 
 ### Server
 - [`db.runCommand()`](https://docs.mongodb.com/manual/reference/method/db.runCommand/)
@@ -70,15 +102,25 @@ If its oplog has not reached time T, the mongod must `wait` to service the reque
 > `db.runCommand()` runs the command in the context of the current database.
 The method returns a response document that contains the following fields:
   - `ok`, 
-  - `operationTime`, and 
-  > For operations associated with causally consistent sessions, 
-    MongoDB drivers use this time to automatically set the *Read Operations and afterClusterTime*.
-  - `$clusterTime`.
+    > A number that indicates whether the command has succeeded (1) or failed (0).
+  - `operationTime`,
+	> The *logical time of the performed operation*, represented in MongoDB by the *timestamp* from the oplog entry. 
+	  Only for replica sets and sharded clusters.
+	> If the command does not generate an oplog entry, e.g. a read operation, 
+	  then the operation does not advance the logical clock. In this case, `operationTime` returns:
+	    - For read concern "local", ***the timestamp of the most recent entry in the oplog***.
+              - Question: Not the timestamp of the write from which the value is read?
+	    - For read concern "majority" and "linearizable", the timestamp of the most recent majority-acknowledged entry in the oplog.
+	> For operations associated with causally consistent sessions, 
+	  MongoDB drivers use this time to automatically set the *Read Operations and afterClusterTime*.
+  - `$clusterTime`
+    - `clusterTime`
+    - `signature`
 
 ## Causal Consistency in MongoDB
 - [IMPORTANT: Causal Consistency and Read and Write Concerns](https://docs.mongodb.com/manual/core/causal-consistency-read-write-concerns/)
 
-> With MongoDB’s causally consistent client sessions, 
+> With MongoDB's [causally consistent client sessions](https://docs.mongodb.com/manual/core/read-isolation-consistency-recency/#sessions), 
 different combinations of read and write concerns provide different causal consistency guarantees. 
 
 > If causal consistency *implies durability*, then, as seen from the table, 
@@ -91,6 +133,7 @@ then write operations with { w: 1 } write concern can also provide causal consis
 ## [Code](https://github.com/mongodb/mongo)
 - [ClusterTime Increment: `reserverTicks()`](https://github.com/mongodb/mongo/blob/master/src/mongo/db/logical_clock.cpp)
 - [ClusterTime Distribution: `advanceClusterTime()`](https://github.com/mongodb/mongo/blob/master/src/mongo/db/logical_clock.cpp)
+- [ ] [Causally Consistent Session]()
 - [ ] [READ?]()
 - [ ] [WRITE?]()
 - [ ] [For Appendix A2.2@SIGMOD2019]()

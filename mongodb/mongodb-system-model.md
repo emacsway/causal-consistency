@@ -1,10 +1,13 @@
 # mongodb-system-model
 
-## Client vs. Server
+## Client vs. Server System Model
+
+## Client
+
 
 ## [Replica Set](https://docs.mongodb.com/manual/replication/)
 
-### Overview Architecture
+### Overview
 
 > A *replica set* is a group of mongod instances that maintain the same data set.
 A replica set contains several data bearing nodes and optionally one *arbiter* node. 
