@@ -3,7 +3,6 @@
 ## Papers
 
 ### NSDI
-- [NSDI2017 (Wyatt Lloyd): I Can't Believe It's Not Causal! Scalable Causal Consistency with No Slowdown Cascades]()
 - [NSDI2013 (Wyatt Lloyd): Stronger Semantics for Low-Latency Geo-Replicated Storage]()
 > `Eiger`. The primary contributions of this work are enabling scalable causal consistency 
 for the complex column-family data model, as well as novel, 
