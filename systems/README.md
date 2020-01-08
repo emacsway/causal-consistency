@@ -12,8 +12,8 @@ non-blocking algorithms for both read-only and write-only transactions.
 ### SOSP
 - [SOSP2011 (Wyatt Lloyd): Do Not Settle for Eventual Scalable Causal Consistency for Wide-Area Storage with COPS]()
 > `COPS`. In this paper, we identify and define a consistency model: 
-causal consistency with convergent conflict handling, or causal+;
-> We present the design and implementation of COPS,
+causal consistency with convergent conflict handling, or ***causal+***;
+> We present the design and implementation of *COPS*,
 a key-value store that delivers this consistency model across the wide-area.
 
 ### EuroSys
