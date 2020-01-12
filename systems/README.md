@@ -19,6 +19,10 @@ a key-value store that delivers this consistency model across the wide-area.
 ### EuroSys
 - [EuroSys2017 (Manuel Bravo): Saturn A Distributed Metadata Service for Causal Consistency]()
 
+### TOCS
+- [TOCS2011: Depot: Cloud Storage with Minimal Trust]()
+  > FJC: Fork-Join-Causal Consistency
+
 ### ICDCS
 - [ICDCS2016 (Manuel Bravo): Cure Strong Semantics Meets High Availability and Low Latency]()
 

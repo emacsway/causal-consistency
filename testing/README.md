@@ -4,7 +4,7 @@
 
 ### POPL
 - [POPL2017 (Lucas Brutschy): Serializability for Eventual Consistency: Criterion, Analysis, and Applications]()
-- [POPL2017 (Constantin Enea): Verifying Causal Consistency]()
+- [POPL2017 (Constantin Enea): On Verifying Causal Consistency]()
 
 ### PLDI
 - [PLDI2018 (Lucas Brutschy): Static Serializability Analysis for Causal Consistency]()
