@@ -33,4 +33,11 @@ a key-value store that delivers this consistency model across the wide-area.
 - [Wyatt Lloyd](https://www.cs.princeton.edu/~wlloyd/)
 - [Manuel Bravo @ IMDEA Software Institute](https://sites.google.com/view/manuelbravo)
 
-## Sources
+## Source Code
+
+## Articles
+- [Causal Consistency (Jan Lindstrom; 2015-02-22)](https://mariadb.org/causal-consistency/)
+> COPS, Eiger, Bolt-on Causal Consistency
+> Massively Multi-player Online Role-Playing Games (MMORPG)
+  - [(2013) Consistency Models for Cloud-based Online Games: the Storage System's Perspective](https://pdfs.semanticscholar.org/e371/b40896e63bef3592e971773055c304c6011a.pdf?_ga=2.116073605.2083703173.1580642097-1344665591.1580642097)
+> Facebook
